@@ -1,23 +1,27 @@
 <template>
-  <div class="about">
-   
-
+  <div class="feedback">
     <v-card>
       <v-card-title>
-         <v-icon color="black ">mdi-account</v-icon>
-         <b>Users management</b>
+        <v-icon color="black ">mdi-account</v-icon>
+        <b>Users management</b>
       </v-card-title>
-        <v-col cols="6" sm="3" class="py-4 pl-4">
-          <v-text-field v-model="search" label="Search" placeholder></v-text-field>
-        </v-col>
-      <v-data-table :headers="headers" :items="desserts" :search="search" class="elevation-4 ma-lg-5">
+      <v-col cols="6" sm="3" class="py-4 pl-4">
+        <v-text-field v-model="search" label="Search" placeholder></v-text-field>
+      </v-col>
+
+      <v-data-table
+        :headers="headers"
+        :items="desserts"
+        :search="search"
+        class="elevation-4 ma-lg-5"
+      >
         <template v-slot:item.UserIsActive="{ item }">
-          <a   @click="getUserID(item.UserUsername)" class="text-center">
+          <a @click="getUserID(item.UserUsername)" class="text-center">
             <v-icon>mdi-delete-circle-outline</v-icon>
           </a>
         </template>
       </v-data-table>
-      <br>
+      <br />
     </v-card>
   </div>
 </template>
@@ -25,6 +29,10 @@
 export default {
   data() {
     return {
+      date: new Date().toISOString().substr(0, 10),
+      menu: false,
+      modal: false,
+      menu2: false,
       search: "",
       headers: [
         {
@@ -1047,7 +1055,6 @@ export default {
   methods: {
     getUserID(id) {
       console.log(id);
-      
     }
   }
 };
