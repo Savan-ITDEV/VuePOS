@@ -1,8 +1,8 @@
 <template>
   <div>
     <!-- App.vue -->
-    <v-app app>
-      <v-navigation-drawer app v-model="drawer" dark>
+    <v-app app color="#2fb7bd">
+      <v-navigation-drawer app v-model="drawer" >
         <v-card color="blue-grey darken-2">
           <v-list>
             <v-list-item>
@@ -22,7 +22,7 @@
             </v-list-item>
           </v-list>
         </v-card>
-        <v-divider></v-divider>
+        <!-- <v-divider></v-divider> -->
 
         <!-- <v-list dense nav>
           <v-list-item v-for="item in items" :key="item.title" router :to="item.route" link>
@@ -69,20 +69,23 @@
         </v-list>
       </v-navigation-drawer>
 
-      <v-app-bar app dark>
+      <v-app-bar app color="#2fb7bd">
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
         <v-toolbar-title router-link to="/">
-          <label class="label label-dabger">RMS</label>
+          <label class="white--text">RMS</label>
         </v-toolbar-title>
+
         <!-- size="36" -->
         <div class="flex-grow-1"></div>
-        <!-- 
+
+        <b-button @click="home" type="is-primary">Getdata</b-button>
+
         <v-btn class="mx-2" fab dark outlined small router-link to="/">
           <v-icon>mdi-home</v-icon>
         </v-btn>
 
-        <v-menu left bottom>
+        <!--   <v-menu left bottom>
           <template v-slot:activator="{ on }">
             <v-btn icon v-on="on">
               <v-icon>mdi-dots-vertical</v-icon>
@@ -115,6 +118,7 @@
 
 <script>
 export default {
+ 
   data() {
     return {
       drawer: null,
@@ -165,6 +169,30 @@ export default {
         }
       ]
     };
+  },
+   async created() {
+     // const axios = require("axios");
+      // axios
+      //   .get("https://randomuser.me/api/")
+      //   .then(function(response) {
+      //     // handle success
+      //     console.log(response);
+      //   })
+      //   .catch(function(error) {
+      //     // handle error
+      //     console.log(error);
+      //   })
+      //   .finally(function() {
+      //     // always executed
+      //   });
+      let res = await this.$http.get('https://randomuser.me/api/')
+      console.log(res.data);
+      
+  },
+  methods: {
+    home() {
+     
+    }
   }
 };
 </script>
