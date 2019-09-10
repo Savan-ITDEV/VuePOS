@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Canteen from './views/Canteen.vue';
-import About from './views/About.vue';
+import UserConfig from './views/UserConfig.vue';
 import Dashboard from './views/Dashboard.vue';
 
 Vue.use(Router);
@@ -21,9 +21,9 @@ export default new Router({
 			component: Canteen
 		},
 		{
-			path: '/about',
-			name: 'about',
-			component: About
+			path: '/UserConfig',
+			name: 'UserConfig',
+			component: UserConfig
 		}
 	]
 });
