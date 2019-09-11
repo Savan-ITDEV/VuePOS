@@ -1,39 +1,20 @@
 <template>
 <div>
+
     <!-- App.vue -->
     <v-app app color="#2fb7bd">
         <v-navigation-drawer app v-model="drawer">
-            <v-card>
-                <v-list>
-                    <v-list-item>
-                        <v-list-item-avatar>
-                            <v-img src="https://randomuser.me/api/portraits/women/85.jpg"></v-img>
-                        </v-list-item-avatar>
-                    </v-list-item>
-
-                    <v-list-item link two-line>
-                        <v-list-item-content>
-                            <v-list-item-title class="title">Savan resorts</v-list-item-title>
-                            <v-list-item-subtitle>IT@Savanresorts.com</v-list-item-subtitle>
-                        </v-list-item-content>
-
-                    </v-list-item>
-                </v-list>
-            </v-card>
-            <!-- <v-divider></v-divider> -->
-
-            <!-- <v-list dense nav>
-          <v-list-item v-for="item in items" :key="item.title" router :to="item.route" link>
-            <v-list-item-icon>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>-->
-
+            <v-list-item two-line>
+                <v-list-item-avatar>
+                    <img class="elevation-3" src="https://randomuser.me/api/portraits/women/81.jpg">
+                </v-list-item-avatar>
+                <v-list-item-content>
+                    <v-list-item-title><b>Savan</b></v-list-item-title>
+                    <v-list-item-subtitle>
+                        <v-icon size="13" color="green">mdi-brightness-1</v-icon> online
+                    </v-list-item-subtitle>
+                </v-list-item-content>
+            </v-list-item>
             <v-list dense nav rounded>
                 <v-list-group color="grey" v-for="item in items" :key="item.title" v-model="item.active" :prepend-icon="item.icon" rounded>
                     <template v-slot:activator>
@@ -54,12 +35,11 @@
             </v-list>
         </v-navigation-drawer>
 
-        <v-app-bar app color="#2fb7bd">
+        <v-app-bar app color="rgb(94, 183, 247)">
             <v-app-bar-nav-icon color="white" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-toolbar-title router-link to="/">
                 <v-btn outlined class="white--text" outer-link to="/">RMS</v-btn>
             </v-toolbar-title>
-
             <!-- size="36" -->
             <div class="flex-grow-1"></div>
             <v-btn icon>
@@ -72,7 +52,6 @@
             <v-btn icon>
                 <v-icon color="white">mdi-chevron-right-circle-outline</v-icon>
             </v-btn>
-
         </v-app-bar>
         <!-- Sizes your content based upon application components -->
         <v-content>
@@ -80,22 +59,25 @@
             <v-container app fluid>
                 <!-- If using vue-router -->
                 <transition name="fade">
-                    <router-view />
+                    <v-card>
+                        <router-view />
+                        <v-btn color="pink" class="mb-12 mr-3" dark small bottom right fixed fab>
+                            <v-icon>mdi-plus</v-icon>
+                        </v-btn>
+
+                    </v-card>
                 </transition>
+
             </v-container>
+
         </v-content>
-        <v-fab-transition>
-            <v-btn color="pink" dark absolute top right fab>
-                <v-icon>mdi-plus</v-icon>
-            </v-btn>
-        </v-fab-transition>
+
         <v-footer app md6>
             <v-bottom-navigation class="hidden-sm-and-up" scroll-target="#scroll-area-1" hide-on-scroll absolute horizontal>
                 <v-btn text color="deep-purple accent-4">
                     <span>Recents</span>
                     <v-icon>mdi-history</v-icon>
                 </v-btn>
-
                 <v-btn text color="deep-purple accent-4">
                     <span>Favorites</span>
                     <v-icon>mdi-heart</v-icon>
@@ -106,6 +88,7 @@
                 </v-btn>
             </v-bottom-navigation>
         </v-footer>
+
     </v-app>
 </div>
 </template>
@@ -114,6 +97,16 @@
 export default {
     data() {
         return {
+            direction: 'top',
+            fab: false,
+            fling: false,
+            hover: false,
+            tabs: null,
+            top: false,
+            right: true,
+            bottom: true,
+            left: false,
+            transition: 'slide-y-reverse-transition',
             drawer: null,
             items: [{
                     title: "Administrator",
@@ -201,7 +194,7 @@ export default {
             ]
         };
     },
-    async created() {
+    created() {
         // const axios = require("axios");
         // axios
         //   .get("https://randomuser.me/api/")
@@ -216,16 +209,19 @@ export default {
         //   .finally(function() {
         //     // always executed
         //   });
-        let res = await this.$http.get("https://randomuser.me/api/");
-        console.log(res.data);
+        // let res = await this.$http.get("https://randomuser.me/api/");
+        // console.log(res.data);
     },
     methods: {
         home() {}
-    }
+    },
+
 };
 </script>
 
 <style>
+/* This is for documentation purposes and will not be needed in your application */
+
 .fade-enter-active,
 .fade-leave-active {
     transition: opacity 0.5s;
