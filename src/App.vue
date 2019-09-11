@@ -38,7 +38,7 @@
         <v-app-bar app color="rgb(94, 183, 247)">
             <v-app-bar-nav-icon color="white" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-toolbar-title router-link to="/">
-                <v-btn outlined class="white--text" outer-link to="/">RMS</v-btn>
+                <v-btn outlined @click="getData" class="white--text" outer-link to="/">{{$store.getters.titel}}</v-btn>
             </v-toolbar-title>
             <!-- size="36" -->
             <div class="flex-grow-1"></div>
@@ -213,7 +213,9 @@ export default {
         // console.log(res.data);
     },
     methods: {
-        home() {}
+        getData() {
+            this.$store.commit('setTitel', 'RMS');
+        }
     },
 
 };

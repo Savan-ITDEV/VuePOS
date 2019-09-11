@@ -25,7 +25,7 @@
             </v-flex>
             <v-flex xs10 sm6 md3>
                 <v-overlay :value="overlay">
-                    <v-card color="primary" dark >
+                    <v-card color="primary" dark>
                         <v-card-text>
                             Loading...
                             <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
@@ -115,8 +115,12 @@ export default {
                     icon: "mdi-account-tie",
                     route: "/home"
                 }
-            ]
+            ],
+
         };
+    },
+    computed: {
+
     },
     methods: {
         goTodetail(url) {
@@ -124,10 +128,25 @@ export default {
         }
     },
     watch: {
-        
-    },
-    async created() {
 
+    },
+    mounted() {
+       db.collection('menu').orderBy("title", "asc").get().then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                console.log(doc.data().title);
+                const data = {
+                    'title': doc.data().title,
+                    'icon': doc.data().icon,
+                    'route': doc.data().route
+                }
+                this.overlay = false;
+                this.menus.push(data);
+
+            })
+        })
+    },
+    created() {
+       
         // this.items.forEach(function (obj) {
         //     db
         //         .collection('menu')
@@ -145,19 +164,6 @@ export default {
         //         });
         // });
 
-        let dbData = await db.collection('menu').orderBy("title", "asc").get().then(querySnapshot => {
-            querySnapshot.forEach(doc => {
-                console.log(doc.id);
-                const data = {
-                    'title': doc.data().title,
-                    'icon': doc.data().icon,
-                    'route': doc.data().route
-                }
-                this.overlay = false;
-                this.menus.push(data);
-                
-            })
-        })
     }
 };
 </script>
