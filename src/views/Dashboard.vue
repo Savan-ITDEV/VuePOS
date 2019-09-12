@@ -1,39 +1,38 @@
 <template>
 <div class="dashboard">
-        <v-layout row wrap>
-            <v-flex xs12 sm6 md3 v-for="(i,n) in menus" :key="n">
-                <a @click="goTodetail(i.route)">
-                    <v-hover v-slot:default="{ hover }">
-                        <v-card :elevation="hover ? 12 : 2" class="text-xs-center ma-2">
-                            <v-row class="py-1 pl-1">
-                                <v-col class="shrink">
-                                    <v-icon size="100" color="rgb(94, 183, 247)">{{i.icon}}</v-icon>
-                                </v-col>
-                                <v-col class="text-left">
-                                    <v-container class="pa-1">
-                                        <h5 class="text-left">{{i.title}}</h5>
-                                    </v-container>
-                                </v-col>
-                                <a>
-                                    <small style="font-size:11px" class="text-xs-center ma-5">Released on 07, Apr 2018</small>
-                                </a>
-                            </v-row>
-                        </v-card>
-                    </v-hover>
-                </a>
-            </v-flex>
-            <v-flex xs10 sm6 md3>
-                <v-overlay :value="overlay">
-                    <v-card color="primary" dark>
-                        <v-card-text>
-                            Loading...
-                            <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
-                        </v-card-text>
+    <v-layout row wrap>
+        <v-flex xs12 sm6 md3 v-for="(i,n) in menus" :key="n">
+            <a @click="goTodetail(i.route)">
+                <v-hover v-slot:default="{ hover }">
+                    <v-card :elevation="hover ? 12 : 2" class="text-xs-center ma-2">
+                        <v-row class="py-1 pl-1">
+                            <v-col class="shrink">
+                                <v-icon size="100" color="rgb(94, 183, 247)">{{i.icon}}</v-icon>
+                            </v-col>
+                            <v-col class="text-left">
+                                <v-container class="pa-1">
+                                    <h5 class="text-left">{{i.title}}</h5>
+                                </v-container>
+                            </v-col>
+                            <a>
+                                <small style="font-size:11px" class="text-xs-center ma-5">Released on 07, Apr 2018</small>
+                            </a>
+                        </v-row>
                     </v-card>
-                </v-overlay>
-            </v-flex>
-        </v-layout>
-   
+                </v-hover>
+            </a>
+        </v-flex>
+        <v-flex xs10 sm6 md3>
+            <v-overlay :value="overlay">
+                <v-card color="primary" dark>
+                    <v-card-text>
+                        Loading...
+                        <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
+                    </v-card-text>
+                </v-card>
+            </v-overlay>
+        </v-flex>
+    </v-layout>
 
     <!-- <v-dialog  v-model="dialog" hide-overlay persistent width="320">
             <v-card  color="primary" dark>
@@ -132,10 +131,7 @@ export default {
     },
     mounted() {
         db.collection('menu').orderBy("title", "asc").get().then(querySnapshot => {
-
             querySnapshot.forEach(doc => {
-                console.log(doc);
-                
                 const data = {
                     'title': doc.data().title,
                     'icon': doc.data().icon,
@@ -146,26 +142,7 @@ export default {
             })
         })
     },
-    created() {
-
-        // this.items.forEach(function (obj) {
-        //     db
-        //         .collection('menu')
-        //         .add({
-        //             id: obj.title,
-        //             title: obj.title,
-        //             icon: obj.icon,
-        //             route: obj.route
-        //         })
-        //         .then(function (docRef) {
-        //             console.log('Document written with ID: ', docRef.id);
-        //         })
-        //         .catch(function (error) {
-        //             console.error('Error adding document: ', error);
-        //         });
-        // });
-
-    }
+    created() {}
 };
 </script>
 
