@@ -1,6 +1,5 @@
 <template>
 <div>
-
     <!-- App.vue -->
     <v-app app color="#2fb7bd">
         <v-navigation-drawer app v-model="drawer">
@@ -56,33 +55,31 @@
         <!-- Sizes your content based upon application components -->
         <v-content>
             <!-- Provides the application the proper gutter -->
-            <v-container app fluid>
-                <!-- If using vue-router -->
-                <transition name="fade">
-                    <v-card>
-                        <router-view />
-                        <v-btn color="pink" class="mb-12 mr-3" dark small bottom right fixed fab>
-                            <v-icon>mdi-plus</v-icon>
-                        </v-btn>
 
-                    </v-card>
-                </transition>
-
-            </v-container>
-
+            <!-- If using vue-router -->
+            <transition name="fade">
+                <v-card class="pa-3 ma-3">
+                    <router-view />
+                    <v-btn color="pink" class="mb-12 mr-3" dark bottom right fixed fab>
+                        <v-icon>mdi-plus</v-icon>
+                    </v-btn>
+                </v-card>
+            </transition>
         </v-content>
 
-        <v-footer app md6>
-            <v-bottom-navigation class="hidden-sm-and-up" scroll-target="#scroll-area-1" hide-on-scroll absolute horizontal>
-                <v-btn text color="deep-purple accent-4">
+        <v-footer app>
+            <v-bottom-navigation grow class="hidden-sm-and-up" scroll-target="#scroll-area-1" hide-on-scroll absolute >
+                <v-btn>
                     <span>Recents</span>
                     <v-icon>mdi-history</v-icon>
                 </v-btn>
-                <v-btn text color="deep-purple accent-4">
+
+                <v-btn>
                     <span>Favorites</span>
                     <v-icon>mdi-heart</v-icon>
                 </v-btn>
-                <v-btn text color="deep-purple accent-4">
+
+                <v-btn>
                     <span>Nearby</span>
                     <v-icon>mdi-map-marker</v-icon>
                 </v-btn>
@@ -222,11 +219,9 @@ export default {
 </script>
 
 <style>
-/* This is for documentation purposes and will not be needed in your application */
-
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity 0.5s;
+    transition: opacity .5s;
 }
 
 .fade-enter,

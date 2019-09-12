@@ -1,6 +1,6 @@
 <template>
   <div class="canteen">
-    <v-card>
+
       <v-card-title>
         <v-icon color="black ">mdi-account</v-icon>
         <b>Users management</b>
@@ -22,7 +22,7 @@
         </template>
       </v-data-table>
       <br />
-    </v-card>
+    
   </div>
 </template>
 <script>

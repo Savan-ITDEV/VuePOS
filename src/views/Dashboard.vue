@@ -1,6 +1,5 @@
 <template>
 <div class="dashboard">
-    <v-container>
         <v-layout row wrap>
             <v-flex xs12 sm6 md3 v-for="(i,n) in menus" :key="n">
                 <a @click="goTodetail(i.route)">
@@ -34,7 +33,9 @@
                 </v-overlay>
             </v-flex>
         </v-layout>
-        <!-- <v-dialog  v-model="dialog" hide-overlay persistent width="320">
+   
+
+    <!-- <v-dialog  v-model="dialog" hide-overlay persistent width="320">
             <v-card  color="primary" dark>
                 <v-card-text>
                    Loading...
@@ -43,7 +44,6 @@
             </v-card>
         </v-dialog> -->
 
-    </v-container>
 </div>
 </template>
 
@@ -131,9 +131,11 @@ export default {
 
     },
     mounted() {
-       db.collection('menu').orderBy("title", "asc").get().then(querySnapshot => {
+        db.collection('menu').orderBy("title", "asc").get().then(querySnapshot => {
+
             querySnapshot.forEach(doc => {
-                console.log(doc.data().title);
+                console.log(doc);
+                
                 const data = {
                     'title': doc.data().title,
                     'icon': doc.data().icon,
@@ -141,12 +143,11 @@ export default {
                 }
                 this.overlay = false;
                 this.menus.push(data);
-
             })
         })
     },
     created() {
-       
+
         // this.items.forEach(function (obj) {
         //     db
         //         .collection('menu')

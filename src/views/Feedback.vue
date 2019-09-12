@@ -1,6 +1,6 @@
 <template>
   <div class="feedback">
-    <v-card>
+  
       <v-card-title>
         <v-icon color="black ">mdi-account</v-icon>
         <b>Users management</b>
@@ -13,8 +13,7 @@
         :headers="headers"
         :items="desserts"
         :search="search"
-        class="elevation-4 ma-lg-5"
-      >
+        class="elevation-4 ma-lg-5" >
         <template v-slot:item.UserIsActive="{ item }">
           <a @click="getUserID(item.UserUsername)" class="text-center">
             <v-icon>mdi-delete-circle-outline</v-icon>
@@ -22,7 +21,7 @@
         </template>
       </v-data-table>
       <br />
-    </v-card>
+    
   </div>
 </template>
 <script>
