@@ -7,7 +7,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state: {
-		titel: 'Hello world',
+		titel: 'RMS',
 		datas: [],
 		start: true
 	},

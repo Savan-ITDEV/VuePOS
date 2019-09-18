@@ -42,8 +42,8 @@
             <!-- size="36" -->
             <div class="flex-grow-1"></div>
             <v-btn icon>
-                <v-badge>
-                    <template v-slot:badge>3</template>
+                <v-badge overlap color="orange">
+                    <template v-slot:badge>10</template>
                     <v-icon color="white">mdi-email</v-icon>
                 </v-badge>
             </v-btn>
@@ -60,15 +60,15 @@
             <transition name="fade">
                 <v-card class="pa-3 ma-3">
                     <router-view />
-                    <v-btn color="pink" class="mb-12 mr-3" dark bottom right fixed fab>
+                    <!-- <v-btn color="pink" class="ma-12"  dark bottom small  right fixed fab>
                         <v-icon>mdi-plus</v-icon>
-                    </v-btn>
+                    </v-> -->
                 </v-card>
             </transition>
         </v-content>
 
         <v-footer app>
-            <v-bottom-navigation grow class="hidden-sm-and-up" scroll-target="#scroll-area-1" hide-on-scroll absolute >
+            <v-bottom-navigation grow class="hidden-sm-and-up" scroll-target="#scroll-area-1" hide-on-scroll absolute>
                 <v-btn>
                     <span>Recents</span>
                     <v-icon>mdi-history</v-icon>
@@ -214,11 +214,24 @@ export default {
             this.$store.commit('setTitel', 'RMS');
         }
     },
+    mounted() {
+        $(document).ready(function () {
+            $('.v-badge__badge').css('max-height', '15px');
+            $('.v-badge__badge').css('max-width', '13px');
+            $('.v-badge__badge').css('font-size', '9px');
+        });
+    },
 
 };
 </script>
 
 <style>
+.v-badge__badge {
+    min-width: 15px;
+    height: 15px;
+    font-size: 10px;
+}
+
 .fade-enter-active,
 .fade-leave-active {
     transition: opacity .5s;

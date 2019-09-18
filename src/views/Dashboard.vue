@@ -5,18 +5,18 @@
             <a @click="goTodetail(i.route)">
                 <v-hover v-slot:default="{ hover }">
                     <v-card :elevation="hover ? 12 : 2" class="text-xs-center ma-2">
-                        <v-row class="py-1 pl-1">
+                        <v-row class=" pl-1">
                             <v-col class="shrink">
                                 <v-icon size="100" color="rgb(94, 183, 247)">{{i.icon}}</v-icon>
                             </v-col>
                             <v-col class="text-left">
                                 <v-container class="pa-1">
-                                    <h5 class="text-left">{{i.title}}</h5>
+                                    <p class="text-left">{{i.title}}</p>
                                 </v-container>
                             </v-col>
-                            <a>
-                                <small style="font-size:11px" class="text-xs-center ma-5">Released on 07, Apr 2018</small>
-                            </a>
+                        </v-row>
+                        <v-row>
+                            <small style="font-size:11px" class="text-center ml-10 mb-2">Released on 07, Apr 2018</small>
                         </v-row>
                     </v-card>
                 </v-hover>
@@ -27,7 +27,7 @@
                 <v-card color="primary" dark>
                     <v-card-text>
                         Loading...
-                        <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
+                        <v-progress-linear indeterminate color="white" class="mb-1"></v-progress-linear>
                     </v-card-text>
                 </v-card>
             </v-overlay>
@@ -48,6 +48,9 @@
 
 <script>
 import db from '../plugins/firebaseInit'
+import {
+    functions
+} from 'firebase';
 export default {
     data() {
         return {
@@ -142,7 +145,47 @@ export default {
             })
         })
     },
-    created() {}
+    created() {
+        // db.collectionGroup('test1').get().then(querySnapshot => {
+        //     querySnapshot.forEach(doc => {
+        //         console.log(doc.id);
+        //         console.log(doc.data());
+        //         console.log(doc.data().name.address.city);
+        //         console.log(doc.data().name.age);
+
+        //     })
+        // })
+
+        // db.collection("test1").doc("p8d6AgLb05DM3V7xrxc9").update({
+        //     "name.address.city": "laos",
+        //     "name.address.provide": "savan",
+
+        // });
+        // db.collection("test1").doc("LA").set({
+        //     name: "Los",
+        //     state: "CA",
+        //     country: 
+        //     {
+        //         "city": "laos",
+        //         "provide": "savan",
+        //         "post": "00001",
+        //         test:{
+        //             A:'a',
+        //             B:'b'
+        //         }
+        //     }
+        // })
+        db.collection('posts').doc('demo-post').collection('comments').get().then(function (doc) {
+
+        });
+        db.collection('posts/demo-post/comments/5PEWN51cvjeN2THFcsIr/comments').get().then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                console.log(doc);
+
+            })
+        })
+
+    }
 };
 </script>
 
