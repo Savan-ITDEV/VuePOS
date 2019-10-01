@@ -175,15 +175,16 @@ export default {
         //         }
         //     }
         // })
-        db.collection('posts').doc('demo-post').collection('comments').get().then(function (doc) {
+        
+        // db.collection('posts').doc('demo-post').collection('comments').get().then(function (doc) {
 
-        });
-        db.collection('posts/demo-post/comments/5PEWN51cvjeN2THFcsIr/comments').get().then(querySnapshot => {
-            querySnapshot.forEach(doc => {
-                console.log(doc);
+        // });
+        // db.collection('posts/demo-post/comments/5PEWN51cvjeN2THFcsIr/comments').get().then(querySnapshot => {
+        //     querySnapshot.forEach(doc => {
+        //         console.log(doc);
 
-            })
-        })
+        //     })
+        // })
 
     }
 };

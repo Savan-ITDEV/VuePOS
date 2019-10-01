@@ -4,6 +4,7 @@ import Canteen from './views/Canteen.vue';
 import UserConfig from './views/UserConfig.vue';
 import Dashboard from './views/Dashboard.vue';
 import MenuConfig from './views/MenuConfig.vue';
+import AddUser from './views/AddUser.vue';
 
 Vue.use(Router);
 
@@ -25,6 +26,11 @@ export default new Router({
 			path: '/UserConfig',
 			name: 'UserConfig',
 			component: UserConfig
+		},
+		{
+			path: '/AddUser',
+			name: 'AddUser',
+			component: AddUser
 		},
 		{
 			path: '/MenuConfig',

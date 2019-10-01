@@ -6,14 +6,17 @@
 
     </v-card-title>
     <v-container class="grey lighten-5">
-        <!-- <v-layout row wrap>
-            <v-flex xs6 md3 class="pl-2">
+        <v-layout row wrap>
+            <!-- <v-flex xs6 md3 class="pl-2">
                 <v-select :items="itemss" v-model="selected" label="Solo field" solo></v-select>
-            </v-flex>
-            <v-flex xs4 md2 pa-1>
-                <v-btn block color="blue" dark> Submit </v-btn>
-            </v-flex>
-        </v-layout> -->
+            </v-flex> -->
+            <v-flex xs4 md2 pa-2 pl-4>
+                <v-btn block color="blue" v-on:click="Gotopage()" dark> 
+                     Add User 
+                      <v-icon> mdi-account-plus </v-icon>                     
+                     </v-btn>
+            </v-flex>         
+        </v-layout>
         <v-card class="pa-2">
             <table id="example" class="table table-responsive-md ma-2 nowrap display" style="cursor:pointer">
                 <thead>
@@ -498,7 +501,11 @@
         </v-card>
 
     </v-container>
+  <b-modal id="modal-1" title="BootstrapVue">
+    <p class="my-4">Hello from modal!</p>
+  </b-modal>
 </div>
+
 </template>
 
 <script>
@@ -506,6 +513,8 @@ export default {
 
     data() {
         return {
+           
+            dialog: false,
             json_fields: {
 
                 "country": "String",
@@ -549,7 +558,8 @@ export default {
                     first_name: 'Jami',
                     last_name: 'Carney'
                 }
-            ]
+            ],
+           
         }
     },
     methods: {
@@ -559,27 +569,37 @@ export default {
         }
     },
     computed: {
-
+   
+    
     },
     mounted() {
         $(document).ready(function () {
             $('#example').DataTable({
-
                 dom: 'Bfrtip',
-                buttons: [{
+                buttons: [
+                    // {
+                    //     extend: '',
+                    //     className: 'v-btn v-btn--contained  primary adduser v-size--default ml-2',
+                    //     text: ' Add User <i class="v-icon   mdi mdi-account-multiple-plus theme--dark"></i>'
+                    // }, 
+                    {
                         extend: 'excel',
-                        className: 'v-btn v-btn--contained primary v-size--default ml-2',
-                        text: 'Excel'
-                    }, {
-                        extend: 'pdf',
-                        className: 'v-btn v-btn--contained warning v-size--default',
-                        text: 'PDF'
+                         className: 'v-btn v-btn--contained Exceltable primary v-size--default ml-2',
+                        text: 'Excel <i class="v-icon  mdi mdi-file-excel-box  theme--dark"></i>'
                     },
-
+                     {
+                        extend: 'pdf',
+                        className: 'v-btn v-btn--contained PDFtable warning v-size--default',
+                        text: 'PDF <i class="v-icon  mdi mdi-pdf-box  theme--dark"></i> '
+                    },
                 ],
                 select: true,
             });
             $("button").removeClass("dt-button buttons-excel buttons-html5")
+              
+             $(".adduser").click(function() {             
+                
+             }); 
         });
         this.json_data = this.items;
         //  console.log(this.desserts.length);
@@ -589,6 +609,12 @@ export default {
     },
     created() {
 
+    },
+    methods: {
+        Gotopage()
+        {
+               this.$router.push('/AddUser');
+        }
     },
 
 };

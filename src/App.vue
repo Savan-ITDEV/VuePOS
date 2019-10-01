@@ -2,7 +2,8 @@
 <div>
     <!-- App.vue -->
     <v-app app color="#2fb7bd">
-        <v-navigation-drawer app v-model="drawer">
+         <drawers />
+        <!-- <v-navigation-drawer app v-model="drawer">
             <v-list-item two-line>
                 <v-list-item-avatar>
                     <img class="elevation-3" src="https://randomuser.me/api/portraits/women/81.jpg">
@@ -14,27 +15,31 @@
                     </v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
-            <v-list dense nav rounded>
-                <v-list-group color="grey" v-for="item in items" :key="item.title" v-model="item.active" :prepend-icon="item.icon" rounded>
-                    <template v-slot:activator>
-                        <v-list-item-content>
-                            <v-list-item-title v-text="item.title"></v-list-item-title>
-                        </v-list-item-content>
-                    </template>
+              <ul>
+                <li v-for="(value, key) in datas" :key="key">{{ key }}: {{ value }} </li>
+            </ul> -->
 
-                    <v-list-item v-for="subItem in item.items" :key="subItem.title" router :to="subItem.route" link>
-                        <v-list-item-icon>
-                            <v-icon color="#1a8470">mdi-menu-right-outline</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                            <v-list-item-title v-text="subItem.title"></v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list-group>
+        <!-- <v-list dense nav rounded>
+            <v-list-group color="grey" v-for="(item,k) in datas" :key="k" v-model="item.active" rounded>
+                <template v-slot:activator>
+                    <v-list-item-content>
+                        <v-list-item-title v-text="k"></v-list-item-title>
+                    </v-list-item-content>
+                </template>
+
+                <v-list-item v-for="subItem in item.items" :key="subItem.title" router :to="subItem.route" link>
+                    <v-list-item-icon>
+                        <v-icon color="#1a8470">mdi-menu-right-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title v-text="subItem.title"></v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+            </v-list-group>
             </v-list>
-        </v-navigation-drawer>
+        </v-navigation-drawer> -->
 
-        <v-app-bar app color="rgb(94, 183, 247)">
+        <v-app-bar dense dark app color="rgb(94, 183, 247)">
             <v-app-bar-nav-icon color="white" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-toolbar-title router-link to="/">
                 <v-btn outlined @click="getData" class="white--text" outer-link to="/">{{$store.getters.titel}}</v-btn>
@@ -55,15 +60,14 @@
         <!-- Sizes your content based upon application components -->
         <v-content>
             <!-- Provides the application the proper gutter -->
-
             <!-- If using vue-router -->
             <transition name="fade">
-                <v-card class="pa-3 ma-3">
-                    <router-view />
+                <!-- <v-card class="pa-3 ma-3"> -->
+                    <router-view class="pa-2 ma-2" />
                     <!-- <v-btn color="pink" class="ma-12"  dark bottom small  right fixed fab>
                         <v-icon>mdi-plus</v-icon>
                     </v-> -->
-                </v-card>
+                <!-- </v-card> -->
             </transition>
         </v-content>
 
@@ -91,7 +95,12 @@
 </template>
 
 <script>
+import db from './plugins/firebaseInit'
+import drawers from './views/Drawer'
 export default {
+    components: {
+        drawers
+    },
     data() {
         return {
             direction: 'top',
@@ -104,7 +113,8 @@ export default {
             bottom: true,
             left: false,
             transition: 'slide-y-reverse-transition',
-            drawer: null,
+            // datas: {},
+            restaurant: {},
             items: [{
                     title: "Administrator",
                     icon: "mdi-account",
@@ -192,6 +202,17 @@ export default {
         };
     },
     created() {
+        // var data = new Map();
+        // db.collection("menuList").doc("LA").get().then(function (docs) {
+        //     // console.log(docs.data());
+        //     data.push(docs.data());
+        //     // this.datas.push(docs.data().Administrator);
+        // })
+        // //console.log(data);
+        // data.forEach((val, key) => {
+        //     console.log(key, val);
+        // });
+
         // const axios = require("axios");
         // axios
         //   .get("https://randomuser.me/api/")
@@ -208,6 +229,23 @@ export default {
         //   });
         // let res = await this.$http.get("https://randomuser.me/api/");
         // console.log(res.data);
+        // const data = [];
+        // db.collection("menuList").onSnapshot(function (doc) {
+
+        //      console.log("Current data: ", doc.docs);
+        //     // data.push(doc.data());
+
+        // // });
+        // db.collectionGroup('menuList').doc('LA').get().then(querySnapshot => {
+        //     // console.log(querySnapshot.docs.map(doc => doc.data()));
+        //     console.log(querySnapshot);
+        //     //  console.log(col.data());
+
+        // });
+
+        // db.collection("menuList").doc("LA").set({
+
+        // });
     },
     methods: {
         getData() {
@@ -215,13 +253,23 @@ export default {
         }
     },
     mounted() {
+
         $(document).ready(function () {
             $('.v-badge__badge').css('max-height', '15px');
             $('.v-badge__badge').css('max-width', '13px');
             $('.v-badge__badge').css('font-size', '9px');
         });
     },
-
+    computed: {
+        drawer: {
+            get() {
+                return this.$store.state.drawer
+            },
+            set(value) {                     
+                this.$store.commit('setDrawer', value)
+            },
+        },
+    },
 };
 </script>
 

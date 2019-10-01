@@ -9,7 +9,8 @@ export default new Vuex.Store({
 	state: {
 		titel: 'RMS',
 		datas: [],
-		start: true
+		start: true,
+		drawer: false,
 	},
 	mutations: {
 		setTitel(state, titel) {
@@ -20,7 +21,10 @@ export default new Vuex.Store({
 		},
 		setStart(state, start) {
 			state.start = start;
-		}
+		},
+		setDrawer(state, status) {
+			state.drawer = status
+		  },
 	},
 	getters: {
 		titel: (state) => state.titel,
