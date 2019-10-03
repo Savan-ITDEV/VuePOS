@@ -34,15 +34,25 @@
                             </b-form-checkbox-group>
                         </b-form-group>
                     </v-flex>
-                  
+
                     <v-flex xs12 md4 class="pl-2 pr-2">
-                        <b-form-group id="input-group-3" label="Your Photo:" label-for="input-3">
-                            <b-img style="cursor: pointer" :src="imageAvatar" id="imageSelector" @click="imagePicker()"  class="img-thumbnails img-fluidx"></b-img>
-                            <input type="file" id="file" hidden class="fileInput" accept="image/*" @change="onFileChange($event)">
-                            <v-btn color="primary" class="ma-2 uplaoadx" @click="doUpload()">Upload</v-btn>
+                        <b-form-group id="input-group-3" label="" label-for="input-3">
+                            <p>Your Photo: <small id="nameAvatar" style=" color: #f31818;"> {{nameAvatar}} </small> </p>
+                            <b-img style="cursor: pointer" :src="imageAvatar" id="imageSelector" @click="imageNameAvatar()" @error="onImgErrorAvatar()" class="img-thumbnails img-fluidx"></b-img>
+                            <input type="file" id="file" hidden class="fileInputAvatar" accept="image/*" @change="onFileChangeAvatar($event)">
+                            <v-btn color="primary" hidden class="ma-2 uplaoadx" @click="doUpload()">Upload</v-btn>
                         </b-form-group>
                     </v-flex>
-                 
+
+                    <v-flex xs12 md4 class="pl-2 pr-2">
+                        <b-form-group id="input-group-3" label="" label-for="input-3">
+                            <p>Your ID Card: <small id="nameIdCard" style=" color: #f31818;"> {{nameIdCard}} </small> </p>
+                            <b-img style="cursor: pointer" :src="imageIdCard" id="imageSelector" @click="imageNameIdCard()"  @error="onImgErrorIdCard()" class="img-thumbnails img-fluidx"></b-img>
+                            <input type="file" id="file" hidden class="fileInputIdCard" accept="image/*" @change="onFileChangeIdCard($event)">
+                            <v-btn color="primary" hidden class="ma-2 uplaoadx" @click="doUpload()">Upload</v-btn>
+                        </b-form-group>
+                    </v-flex>
+
                 </v-layout>
 
                 <v-btn type="submit" color="primary" class="ma-2">Submit</v-btn>
@@ -58,14 +68,24 @@
         </v-flex>
     </v-card>
 
+    <v-bottom-sheet v-model="sheet">
+        <v-sheet class="text-center" height="200px">
+            <v-btn class="mt-6" text color="red" @click="sheet = !sheet">close</v-btn>
+            <div class="py-3">Your file image is broken</div>
+        </v-sheet>
+    </v-bottom-sheet>
+
 </div>
 </template>
 
 <script>
+var imageExists = require('image-exists');
 export default {
     data() {
         return {
-
+            sheet: false,
+            nameAvatar: '',
+            nameIdCard: '',
             imageAvatar: require('../assets/default_image.png'),
             imageIdCard: require('../assets/default_image.png'),
             imageAccount: require('../assets/default_image.png'),
@@ -160,13 +180,26 @@ export default {
                 value: null
             }, 'Attapeu', 'Bokeo', 'Bolikhamsai', 'Champasak', 'Hua Phan', 'Khammouane', 'Luang Namtha', 'Luang Prabang', 'Oudomxay', 'Phongsali', 'Sayabouly', 'Salavan', 'Savannakhet', 'Vientiane Prefecture', 'Vientiane Province', 'Xieng Khouang', 'Xaisomboun Province'],
             show: true,
-            file: '',
+            fileAvatar: '',
+            fileIdCard: '',
         }
     },
     created() {
-      
+
     },
     methods: {
+        onImgErrorAvatar(event) {
+            this.nameAvatar = 'Your file image is broken';
+            this.imageAvatar = require('../assets/default_image.png');
+            console.log(event);
+            this.$swal.fire({
+                type: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+            })
+            
+            //this.nameAvatar = '';
+        },
         onSubmit(evt) {
             evt.preventDefault()
             alert(JSON.stringify(this.items))
@@ -181,34 +214,78 @@ export default {
         save(date) {
             //this.$refs.menu.save(date)
         },
-        imagePicker() {
-            $('.fileInput').click();
+        imageNameAvatar() {
+            $('.fileInputAvatar').click();
         },
-        onFileChange(e) {
+        imageNameIdCard() {
+            $('.fileInputIdCard').click();
+        },
+        onFileChangeAvatar(e) {
             const files = e.target.files || e.dataTransfer.files;
             if (!files.length)
                 return;
-            this.file = files[0];
-            this.createImage(files[0]);
+            this.fileAvatar = files[0];
+            if (this.fileAvatar.size > 5000000) {
+                console.log('Not allow 5MB');
+
+                this.imageAvatar = '';
+
+            } else {
+           
+                this.nameAvatar = '';
+                this.createImage(files[0],0);
+            }
+
         },
-        createImage(file) {
+        onFileChangeIdCard(e) {
+          
+            const files = e.target.files || e.dataTransfer.files;
+            if (!files.length)
+                return;
+            this.fileIdCard = files[0];
+            if (this.fileIdCard.size > 5000000) {
+               
+                this.$swal.fire({
+                    type: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                    footer: '<a href>Why do I have this issue?</a>'
+                })
+                this.imageIdCard = '';
+
+            } else {
+                this.imageIdCard = '';
+                this.createImage(files[0],1);
+            }
+
+        },
+        createImage(file,con) {
             const reader = new FileReader();
 
             reader.onload = (e) => {
+                if (con == 0) {
+                    this.imageAvatar = e.target.result;
+                } else if (con == 1) {
+                    this.imageIdCard = e.target.result;
+                } else if (con == 2) {
+                }
 
-                this.imageAvatar = e.target.result;
             };
             reader.readAsDataURL(file);
         },
         doUpload() {
             const fd = new FormData();
-            fd.append('file', this.file);
-             this.$http.post('http://localhost:8084/upload/',fd).then(function (response) {
+            fd.append('file', this.fileAvatar);
+            this.$http.post('http://localhost:8084/upload/', fd, {
+                    onUploadProgress: uploadEvent => {
+                        console.log('Upload Progress :' + Math.round(uploadEvent.loaded / uploadEvent.total * 100) + '%');
+                    }
+                }).then(function (response) {
                     console.log(response)
                 })
                 .catch(function (error) {
                     alert(error)
-                })         
+                })
         }
     },
     watch: {
@@ -227,8 +304,9 @@ export default {
     border-radius: 0.25rem;
     max-width: 100%;
 }
+
 .img-fluidx {
     width: 100%;
-    height: 250px;
+    height: 210px;
 }
 </style>
