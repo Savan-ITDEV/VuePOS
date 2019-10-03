@@ -25,7 +25,7 @@ import jQuery from 'jquery';
 Vue.config.productionTip = false;
 
 const request = axios.create({
-	baseURL: '/api'
+	baseURL: "",
 });
 global.jQuery = jQuery
 global .$ = jQuery

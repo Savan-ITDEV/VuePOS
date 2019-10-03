@@ -11,7 +11,7 @@
                 <v-select :items="itemss" v-model="selected" label="Solo field" solo></v-select>
             </v-flex> -->
             <v-flex xs4 md2 pa-2 pl-4>
-                <v-btn block color="blue" v-on:click="Gotopage()" dark> 
+                <v-btn block color="blue" id="addnewUser" hidden v-on:click="Gotopage()" dark> 
                      Add User 
                       <v-icon> mdi-account-plus </v-icon>                     
                      </v-btn>
@@ -577,11 +577,11 @@ export default {
             $('#example').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
-                    // {
-                    //     extend: '',
-                    //     className: 'v-btn v-btn--contained  primary adduser v-size--default ml-2',
-                    //     text: ' Add User <i class="v-icon   mdi mdi-account-multiple-plus theme--dark"></i>'
-                    // }, 
+                    {
+                        extend: '',
+                        className: 'v-btn v-btn--contained  primary adduser v-size--default ml-2',
+                        text: ' Add User <i class="v-icon  mdi mdi-account-multiple-plus theme--dark"></i>'
+                    }, 
                     {
                         extend: 'excel',
                          className: 'v-btn v-btn--contained Exceltable primary v-size--default ml-2',
@@ -598,8 +598,9 @@ export default {
             $("button").removeClass("dt-button buttons-excel buttons-html5")
               
              $(".adduser").click(function() {             
-                
+                    $("#addnewUser").click();     
              }); 
+
         });
         this.json_data = this.items;
         //  console.log(this.desserts.length);

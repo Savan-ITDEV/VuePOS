@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Node.JS File Upload</title>
+</head>
+
+<body>
+ 
+    <h1>Upload File Here</h1>
+    <input type="file" id="file" name="upfile" value="">
+    <!-- <input type="submit" /> -->
+    <button id="upload" type="button" onclick="Upload()"> Upload </button>
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+</html>
+
+<script>
+  function Upload() {
+
+    var fd = new FormData();
+    var files = $('#file')[0].files[0];
+    fd.append('file', files);
+  //  console.log(files);
+    
+    $.ajax({
+      url: 'upload',
+      type: 'post',
+      data: fd,
+      contentType: false,
+      processData: false,
+      success: function (response) {
+        if (response != 0) {
+          alert('file uploaded');
+        }
+        else {
+          alert('file not uploaded');
+        }
+      },
+    });
+  }
+</script>

@@ -2,7 +2,7 @@
 <div class="adduser">
 
     <v-card class="ma-2">
-           
+
         <v-flex xs12 md12 class="pl-6 pr-6">
             <b-form @submit="onSubmit" @reset="onReset" v-if="show">
                 <v-layout row wrap>
@@ -19,33 +19,41 @@
 
                             <b-form-input id="input-1" v-else v-model="v.value" :type="v.type" required :placeholder="v.desc"></b-form-input>
                         </b-form-group>
-                        <!-- <b-form-group v-if="v.label == 'Select Date:'" v-show="true" id="input-group-1" :label="v.label" label-for="input-1">
-                            <b-form-input id="input-1" v-model="v.value" :type="v.type" required :placeholder="v.desc"></b-form-input>
-                        </b-form-group> -->
-
                     </v-flex>
                     <v-flex xs12 md4 class="pl-2 pr-2">
                         <b-form-group id="input-group-3" label="Locations:" label-for="input-3">
                             <b-form-select id="input-3" v-model="Location" :options="Locations" required></b-form-select>
                         </b-form-group>
                     </v-flex>
-                    <v-flex xs12 md4 class="pl-2 pr-2">
+                    <v-flex xs12 md8 class="pl-2 pr-2">
                         <b-form-group id="input-group-3" label="language:" label-for="input-3">
-                         <b-form-checkbox-group  
-                            v-model="checked" id="checkboxes-4" style=" cursor: pointer; ">
-                        <b-form-checkbox :value="lag" v-for="lag in language " :key="lag" >
-                              <p style=" cursor: pointer; ">  {{lag}}  </p> 
-                        </b-form-checkbox>                      
-                    </b-form-checkbox-group>
-                      </b-form-group>
+                            <b-form-checkbox-group v-model="checked" id="checkboxes-4" style=" cursor: pointer; ">
+                                <b-form-checkbox :value="lag" v-for="lag in language " :key="lag">
+                                    <p style=" cursor: pointer; "> {{lag}} </p>
+                                </b-form-checkbox>
+                            </b-form-checkbox-group>
+                        </b-form-group>
                     </v-flex>
+                  
+                    <v-flex xs12 md4 class="pl-2 pr-2">
+                        <b-form-group id="input-group-3" label="Your Photo:" label-for="input-3">
+                            <b-img style="cursor: pointer" :src="imageAvatar" id="imageSelector" @click="imagePicker()"  class="img-thumbnails img-fluidx"></b-img>
+                            <input type="file" id="file" hidden class="fileInput" accept="image/*" @change="onFileChange($event)">
+                            <v-btn color="primary" class="ma-2 uplaoadx" @click="doUpload()">Upload</v-btn>
+                        </b-form-group>
+                    </v-flex>
+                 
                 </v-layout>
-            
+
                 <v-btn type="submit" color="primary" class="ma-2">Submit</v-btn>
                 <v-btn type="reset" color="error">Reset</v-btn>
             </b-form>
             <b-card class="mt-3" header="Form Data Result">
+
                 <pre class="m-0">{{ checked + ' Nation : ' +  Location }}</pre>
+                <!-- <pre class="m-0">  {{file.name}}   </pre> -->
+                <!-- <pre class="m-0"> {{  file.size}} </pre>
+                <pre class="m-0">{{ file.type}}  </pre> -->
             </b-card>
         </v-flex>
     </v-card>
@@ -57,7 +65,20 @@
 export default {
     data() {
         return {
-            language : ['English','Thailand','Chinese','Vietnam','Japan'],
+
+            imageAvatar: require('../assets/default_image.png'),
+            imageIdCard: require('../assets/default_image.png'),
+            imageAccount: require('../assets/default_image.png'),
+            mainProps: {
+                center: true,
+                fluidGrow: true,
+                blank: true,
+                blankColor: '#bbb',
+                width: 600,
+                height: 400,
+                class: 'my-5'
+            },
+            language: ['English', 'Thailand', 'Chinese', 'Vietnam', 'Japan'],
             menu: false,
             Location: null,
             checked: [],
@@ -138,8 +159,12 @@ export default {
                 text: 'Select One',
                 value: null
             }, 'Attapeu', 'Bokeo', 'Bolikhamsai', 'Champasak', 'Hua Phan', 'Khammouane', 'Luang Namtha', 'Luang Prabang', 'Oudomxay', 'Phongsali', 'Sayabouly', 'Salavan', 'Savannakhet', 'Vientiane Prefecture', 'Vientiane Province', 'Xieng Khouang', 'Xaisomboun Province'],
-            show: true
+            show: true,
+            file: '',
         }
+    },
+    created() {
+      
     },
     methods: {
         onSubmit(evt) {
@@ -148,10 +173,6 @@ export default {
         },
         onReset(evt) {
             evt.preventDefault()
-            // Reset our form values
-           // this.Location = null
-           // this.checked = []
-            // Trick to reset/clear native browser form validation state
             this.show = false
             this.$nextTick(() => {
                 this.show = true
@@ -160,6 +181,35 @@ export default {
         save(date) {
             //this.$refs.menu.save(date)
         },
+        imagePicker() {
+            $('.fileInput').click();
+        },
+        onFileChange(e) {
+            const files = e.target.files || e.dataTransfer.files;
+            if (!files.length)
+                return;
+            this.file = files[0];
+            this.createImage(files[0]);
+        },
+        createImage(file) {
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+
+                this.imageAvatar = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        },
+        doUpload() {
+            const fd = new FormData();
+            fd.append('file', this.file);
+             this.$http.post('http://localhost:8084/upload/',fd).then(function (response) {
+                    console.log(response)
+                })
+                .catch(function (error) {
+                    alert(error)
+                })         
+        }
     },
     watch: {
         menu(val) {
@@ -168,3 +218,17 @@ export default {
     },
 }
 </script>
+
+<style>
+.img-thumbnails {
+    padding: 0.25rem;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    max-width: 100%;
+}
+.img-fluidx {
+    width: 100%;
+    height: 250px;
+}
+</style>

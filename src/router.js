@@ -36,6 +36,10 @@ export default new Router({
 			path: '/MenuConfig',
 			name: 'MenuConfig',
 			component: MenuConfig
-		}
+		},
+		{
+			path: '/assets',
+			name: 'assets',
+		},
 	]
 });
