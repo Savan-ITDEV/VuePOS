@@ -52,6 +52,14 @@
                             <v-btn color="primary" hidden class="ma-2 uplaoadx" @click="doUpload()">Upload</v-btn>
                         </b-form-group>
                     </v-flex>
+                    <v-flex xs12 md4 class="pl-2 pr-2">
+                        <b-form-group id="input-group-3" label="" label-for="input-3">
+                            <p>Your Bank Account: <small id="nameAccount" style=" color: #f31818;"> {{nameAccount}} </small> </p>
+                            <b-img style="cursor: pointer" :src="imageAccount" id="imageSelector" @click="imageNameAccount()"  @error="onImgErrorAccount()" class="img-thumbnails img-fluidx"></b-img>
+                            <input type="file" id="file" hidden class="fileInputAccount" accept="image/*" @change="onFileChangeAccount($event)">
+                            <v-btn color="primary" hidden class="ma-2 uplaoadx" @click="doUpload()">Upload</v-btn>
+                        </b-form-group>
+                    </v-flex>
 
                 </v-layout>
 
@@ -86,6 +94,7 @@ export default {
             sheet: false,
             nameAvatar: '',
             nameIdCard: '',
+            nameAccount: '',
             imageAvatar: require('../assets/default_image.png'),
             imageIdCard: require('../assets/default_image.png'),
             imageAccount: require('../assets/default_image.png'),
@@ -182,6 +191,7 @@ export default {
             show: true,
             fileAvatar: '',
             fileIdCard: '',
+            fileAccount: '',
         }
     },
     created() {
@@ -189,16 +199,34 @@ export default {
     },
     methods: {
         onImgErrorAvatar(event) {
-            this.nameAvatar = 'Your file image is broken';
+            this.nameAvatar = 'Image is broken';
             this.imageAvatar = require('../assets/default_image.png');
             console.log(event);
             this.$swal.fire({
                 type: 'error',
                 title: 'Oops...',
                 text: 'Something went wrong!',
-            })
-            
-            //this.nameAvatar = '';
+            })      
+        },
+        onImgErrorIdCard(event) {
+            this.nameIdCard = 'Image is broken';
+            this.imageIdCard = require('../assets/default_image.png');
+            console.log(event);
+            this.$swal.fire({
+                type: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+            })      
+        },
+        onImgErrorAccount(event) {
+            this.nameAccount = 'Image is broken';
+            this.imageAccount = require('../assets/default_image.png');
+            console.log(event);
+            this.$swal.fire({
+                type: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+            })      
         },
         onSubmit(evt) {
             evt.preventDefault()
@@ -219,6 +247,9 @@ export default {
         },
         imageNameIdCard() {
             $('.fileInputIdCard').click();
+        },
+        imageNameAccount() {
+            $('.fileInputAccount').click();
         },
         onFileChangeAvatar(e) {
             const files = e.target.files || e.dataTransfer.files;
@@ -254,20 +285,41 @@ export default {
                 this.imageIdCard = '';
 
             } else {
-                this.imageIdCard = '';
+                this.nameIdCard = '';
                 this.createImage(files[0],1);
+            }
+
+        },
+        onFileChangeAccount(e) {   
+            const files = e.target.files || e.dataTransfer.files;
+            if (!files.length)
+                return;
+            this.fileAccount = files[0];
+            if (this.fileAccount.size > 5000000) {
+               
+                this.$swal.fire({
+                    type: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                    footer: '<a href>Why do I have this issue?</a>'
+                })
+                this.imageAccount = '';
+
+            } else {
+                this.nameAccount = '';
+                this.createImage(files[0],2);
             }
 
         },
         createImage(file,con) {
             const reader = new FileReader();
-
             reader.onload = (e) => {
                 if (con == 0) {
                     this.imageAvatar = e.target.result;
                 } else if (con == 1) {
                     this.imageIdCard = e.target.result;
                 } else if (con == 2) {
+                        this.imageAccount = e.target.result
                 }
 
             };
