@@ -11,6 +11,7 @@ import VueAxios from 'vue-axios';
 import VueRx from 'vue-rx';
 import BootstrapVue from 'bootstrap-vue'
 import VueSweetalert2 from 'vue-sweetalert2'
+import { Base64 } from 'js-base64';
 import '../node_modules/bootstrap/dist/css/bootstrap.css'
 import '../node_modules/bootstrap/dist/css/select.dataTables.min.css'
 import '../node_modules/bootstrap/dist/css/buttons.dataTables.min.css'
@@ -33,6 +34,7 @@ global.jQuery = jQuery
 global .$ = jQuery
 
 Vue.use(BootstrapVue)
+Vue.use(Base64)
 Vue.use(VueSweetalert2);
 Vue.use(VueAxios, request);
 //Vue.use(Buefy);

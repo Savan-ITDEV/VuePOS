@@ -40,24 +40,27 @@
                             <p>Your Photo: <small id="nameAvatar" style=" color: #f31818;"> {{nameAvatar}} </small> </p>
                             <b-img style="cursor: pointer" :src="imageAvatar" id="imageSelector" @click="imageNameAvatar()" @error="onImgErrorAvatar()" class="img-thumbnails img-fluidx"></b-img>
                             <input type="file" id="file" hidden class="fileInputAvatar" accept="image/*" @change="onFileChangeAvatar($event)">
-                            <v-btn color="primary" hidden class="ma-2 uplaoadx" @click="doUpload()">Upload</v-btn>
+                            <v-btn color="primary" id="doupload" class="ma-2 uplaoadx" @click="doUpload(1,fileAvatar)">Upload</v-btn>
+                            <v-progress-linear v-model="knowledge" color="light-blue" height="13" striped rounded> <small>{{ knowledge }}% </small> </v-progress-linear>
                         </b-form-group>
                     </v-flex>
 
                     <v-flex xs12 md4 class="pl-2 pr-2">
                         <b-form-group id="input-group-3" label="" label-for="input-3">
                             <p>Your ID Card: <small id="nameIdCard" style=" color: #f31818;"> {{nameIdCard}} </small> </p>
-                            <b-img style="cursor: pointer" :src="imageIdCard" id="imageSelector" @click="imageNameIdCard()"  @error="onImgErrorIdCard()" class="img-thumbnails img-fluidx"></b-img>
+                            <b-img style="cursor: pointer" :src="imageIdCard" id="imageSelector" @error="onImgErrorIdCard()" @click="imageNameIdCard()" class="img-thumbnails img-fluidx"></b-img>
                             <input type="file" id="file" hidden class="fileInputIdCard" accept="image/*" @change="onFileChangeIdCard($event)">
-                            <v-btn color="primary" hidden class="ma-2 uplaoadx" @click="doUpload()">Upload</v-btn>
+                            <v-btn color="primary" class="ma-2 uplaoadx" @click="doUpload(2,fileIdCard)">Upload</v-btn>
+                            <v-progress-linear v-model="knowledge2" color="light-blue" height="13" striped rounded> <small>{{ knowledge2 }}% </small> </v-progress-linear>
                         </b-form-group>
                     </v-flex>
                     <v-flex xs12 md4 class="pl-2 pr-2">
                         <b-form-group id="input-group-3" label="" label-for="input-3">
                             <p>Your Bank Account: <small id="nameAccount" style=" color: #f31818;"> {{nameAccount}} </small> </p>
-                            <b-img style="cursor: pointer" :src="imageAccount" id="imageSelector" @click="imageNameAccount()"  @error="onImgErrorAccount()" class="img-thumbnails img-fluidx"></b-img>
+                            <b-img style="cursor: pointer" :src="imageAccount" id="imageSelector" @click="imageNameAccount()" @error="onImgErrorAccount()" class="img-thumbnails img-fluidx"></b-img>
                             <input type="file" id="file" hidden class="fileInputAccount" accept="image/*" @change="onFileChangeAccount($event)">
-                            <v-btn color="primary" hidden class="ma-2 uplaoadx" @click="doUpload()">Upload</v-btn>
+                            <v-btn color="primary"  class="ma-2 uplaoadx" @click="doUpload(3,fileAccount)">Upload</v-btn>
+                            <v-progress-linear v-model="knowledge3" color="light-blue" height="13" striped rounded> <small>{{ knowledge3 }}% </small> </v-progress-linear>
                         </b-form-group>
                     </v-flex>
 
@@ -67,7 +70,6 @@
                 <v-btn type="reset" color="error">Reset</v-btn>
             </b-form>
             <b-card class="mt-3" header="Form Data Result">
-
                 <pre class="m-0">{{ checked + ' Nation : ' +  Location }}</pre>
                 <!-- <pre class="m-0">  {{file.name}}   </pre> -->
                 <!-- <pre class="m-0"> {{  file.size}} </pre>
@@ -87,10 +89,16 @@
 </template>
 
 <script>
+import {
+    async
+} from 'q';
 var imageExists = require('image-exists');
 export default {
     data() {
         return {
+            knowledge: 0,
+            knowledge2: 0,
+            knowledge3: 0,
             sheet: false,
             nameAvatar: '',
             nameIdCard: '',
@@ -198,35 +206,34 @@ export default {
 
     },
     methods: {
-        onImgErrorAvatar(event) {
+        onImgErrorAvatar() {
             this.nameAvatar = 'Image is broken';
-            this.imageAvatar = require('../assets/default_image.png');
-            console.log(event);
-            this.$swal.fire({
-                type: 'error',
-                title: 'Oops...',
-                text: 'Something went wrong!',
-            })      
+            // this.imageAvatar = require('../assets/default_image.png');
+
+            // this.$swal.fire({
+            //     type: 'error',
+            //     title: 'Oops...',
+            //     text: 'Something went wrong!',
+            // })      
         },
         onImgErrorIdCard(event) {
             this.nameIdCard = 'Image is broken';
             this.imageIdCard = require('../assets/default_image.png');
-            console.log(event);
             this.$swal.fire({
                 type: 'error',
                 title: 'Oops...',
                 text: 'Something went wrong!',
-            })      
+            })
         },
         onImgErrorAccount(event) {
             this.nameAccount = 'Image is broken';
             this.imageAccount = require('../assets/default_image.png');
-            console.log(event);
+
             this.$swal.fire({
                 type: 'error',
                 title: 'Oops...',
                 text: 'Something went wrong!',
-            })      
+            })
         },
         onSubmit(evt) {
             evt.preventDefault()
@@ -252,66 +259,59 @@ export default {
             $('.fileInputAccount').click();
         },
         onFileChangeAvatar(e) {
+            this.knowledge = 0;
+            this.nameAvatar = '';
             const files = e.target.files || e.dataTransfer.files;
+         
+            
             if (!files.length)
                 return;
             this.fileAvatar = files[0];
             if (this.fileAvatar.size > 5000000) {
-                console.log('Not allow 5MB');
-
-                this.imageAvatar = '';
-
-            } else {
-           
-                this.nameAvatar = '';
-                this.createImage(files[0],0);
+                this.nameAvatar = 'Your image max 5mb';
+                this.imageAvatar = require('../assets/default_image.png');
+                this.fileAvatar = '';
+                return;
+            }    
+            if(this.fileAvatar.type =='image/jpeg' || this.fileAvatar.type =='image/jpg' || this.fileAvatar.type =='image/png')
+            {
+            console.log(Base64.encode(this.fileAvatar.name));
+            console.log(this.fileAvatar.name);
+            this.createImage(files[0], 0);
             }
-
         },
         onFileChangeIdCard(e) {
-          
+            this.knowledge2 = 0;
+            this.nameIdCard = '';
             const files = e.target.files || e.dataTransfer.files;
             if (!files.length)
                 return;
             this.fileIdCard = files[0];
             if (this.fileIdCard.size > 5000000) {
-               
-                this.$swal.fire({
-                    type: 'error',
-                    title: 'Oops...',
-                    text: 'Something went wrong!',
-                    footer: '<a href>Why do I have this issue?</a>'
-                })
-                this.imageIdCard = '';
-
-            } else {
-                this.nameIdCard = '';
-                this.createImage(files[0],1);
+                this.nameIdCard = 'Your image max 5mb';
+                this.imageIdCard = require('../assets/default_image.png');
+                this.fileIdCard = '';
+                return
             }
-
+            this.createImage(files[0], 1);
         },
-        onFileChangeAccount(e) {   
+        onFileChangeAccount(e) {
+            this.knowledge3 = 0;
+            this.nameAccount = '';
             const files = e.target.files || e.dataTransfer.files;
             if (!files.length)
                 return;
             this.fileAccount = files[0];
             if (this.fileAccount.size > 5000000) {
-               
-                this.$swal.fire({
-                    type: 'error',
-                    title: 'Oops...',
-                    text: 'Something went wrong!',
-                    footer: '<a href>Why do I have this issue?</a>'
-                })
-                this.imageAccount = '';
-
-            } else {
+                this.nameAccount = 'Your image max 5mb';
+                this.imageAccount = require('../assets/default_image.png');
                 this.nameAccount = '';
-                this.createImage(files[0],2);
+                  return         
+               
             }
-
+             this.createImage(files[0], 2);
         },
-        createImage(file,con) {
+        createImage(file, con) {
             const reader = new FileReader();
             reader.onload = (e) => {
                 if (con == 0) {
@@ -319,24 +319,69 @@ export default {
                 } else if (con == 1) {
                     this.imageIdCard = e.target.result;
                 } else if (con == 2) {
-                        this.imageAccount = e.target.result
+                    this.imageAccount = e.target.result
                 }
-
             };
             reader.readAsDataURL(file);
         },
-        doUpload() {
+        doUpload(con, file) {
+            var url = '';
             const fd = new FormData();
-            fd.append('file', this.fileAvatar);
-            this.$http.post('http://localhost:8084/upload/', fd, {
+            fd.append('file', file);
+
+            if (con == 1) {
+                if (file == '' ||  this.nameAvatar == 'Image is broken') {
+                    this.$swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    })
+                    return
+                } else {
+                    url = 'http://localhost:8084/upload/avatar';
+                }
+            }
+            if (con == 2) {
+                if (file == '') {
+                    this.$swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    })
+                    return
+                } else {
+                    url = 'http://localhost:8084/upload/card';
+                }
+            }
+            if (con == 3) {
+                if (file == '') {
+                    this.$swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    })
+                    return
+                } else {
+                    url = 'http://localhost:8084/upload/bank';
+                }
+            }
+            this.$http.post(url, fd, {
                     onUploadProgress: uploadEvent => {
-                        console.log('Upload Progress :' + Math.round(uploadEvent.loaded / uploadEvent.total * 100) + '%');
+                        console.log(uploadEvent);
+                        if (con == 1) {
+                            this.knowledge = Math.round(uploadEvent.loaded / uploadEvent.total * 100);
+                        } else if (con == 2) {
+                            this.knowledge2 = Math.round(uploadEvent.loaded / uploadEvent.total * 100);
+                        } else if (con == 3) {
+                            this.knowledge3 = Math.round(uploadEvent.loaded / uploadEvent.total * 100);
+                        }
                     }
                 }).then(function (response) {
                     console.log(response)
                 })
                 .catch(function (error) {
-                    alert(error)
+                    console.log(error);
+
                 })
         }
     },
