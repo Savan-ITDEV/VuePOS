@@ -14,7 +14,7 @@
     "bootstrap-vue": "^2.0.1",
     "buefy": "^0.8.3",
     "core-js": "^2.6.5",
-    "datatables.net": "^1.10.19",
+    "datatables.net": "^1.10.22",
     "datatables.net-dt": "^1.10.19",
     "firebase": "^6.6.0",
     "image-exists": "^1.1.0",
