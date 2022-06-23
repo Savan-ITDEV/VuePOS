@@ -19,7 +19,7 @@
     "firebase": "^6.6.0",
     "image-exists": "^1.1.0",
     "js-base64": "^2.5.1",
-    "jsdom": "^15.1.1",
+    "jsdom": "^16.5.0",
     "popper.js": "^1.15.0",
     "rxjs": "^6.5.3",
     "rxjs-compat": "^6.5.3",
